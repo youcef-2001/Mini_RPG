@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 import random
-from Model.Objet import Objet
+from Model.Objet import Objet,Inventaire
+
 
 class Personnage(ABC):
     def __init__(self, nom: str, competence1: str,competence2: str, PV_max : int, current_PV : int, status):
@@ -10,7 +11,7 @@ class Personnage(ABC):
         self.competence2 = competence2
         self.PV_max = PV_max
         self.current_PV = current_PV
-        self.status = status
+        self.status = []
     @abstractmethod
     def attaquer(self, opposant :'Personnage'):
         print(f"{self.nom} attaque {opposant.nom} !")
@@ -35,6 +36,18 @@ class Personnage(ABC):
         """"
         si status pas = none appliquer effet du status
         """
+    def ajouter_statut(self, statut):
+        statut.appliquer(self)
+        self.statuts.append(statut)
+
+    def traiter_statuts(self):
+        for statut in self.statuts[:]:
+            statut.declencher(self)
+            statut.reduire_duree()
+
+            if  statut.is_expired():
+                statut.a_expiration(self)
+                self.statuts.remove(statut)
 
 class Player(Personnage):
     def __init__(self, nom: str, offensif: int, defensif: int, armes: int,armures: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status):
@@ -43,7 +56,7 @@ class Player(Personnage):
         self.defensif = defensif
         self.armes = armes
         self.armures = armures
-        self.inventaire : List[Objet] = []
+        self.inventaire = Inventaire()
         self.competence1 = competence1
         self.competence2 = competence2
 
