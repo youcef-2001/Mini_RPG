@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 class Personnage(ABC):
-    def __init__(self, nom: str, competence1: str,competence2: str):
+    def __init__(self, nom: str, competence1: str,competence2: str, PV_max : int, current_PV : int):
         self.nom = nom
         self.competence1 = competence1
         self.competence2 = competence2
+        self.PV_max = PV_max
+        self.current_PV = current_PV
     @abstractmethod
     def attaquer(self, opposant :'Personnage'):
         print(f"{self.nom} attaque {opposant.nom} !")
@@ -32,7 +34,8 @@ class Player(Personnage):
         self.inventaire= []
 
     def attaquer(self, cible: Personnage):
-        degats = self.offensif + (self.stats // 2)
+        degats = self.offensif
+        cible.current_PV = cible.current_PV - degats
         print(f"{self.nom} attaque {cible.nom} et fait {degats} degats")
 
     def se_defendre(self):
