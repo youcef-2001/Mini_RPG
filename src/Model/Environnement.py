@@ -1,5 +1,5 @@
 import random
-from Model.Event import Walking
+from Model.Event import Walking, Coffre,Combat,Marchand,Dialogue
 
 
 class Environnement:
@@ -15,7 +15,13 @@ class Environnement:
        
        self.event.lancer()
        self.eventcounter+=1
-
+       match (self.eventlist[self.eventcounter]):
+            case "key":self.event= Coffre()
+            case "boss":self.event= Combat()
+            case "combat":self.event= Combat()
+            case "marchand": self.event= Marchand()
+            case "quest":self.event= Dialogue()
+            case "coffre": self.event= Coffre()
 
 
 class EnvironnementBuilder:
@@ -39,11 +45,11 @@ class EnvironnementBuilder:
     def AddEventlist(self,number):
         for i in range(0,number):
             #randomiser apres les event
-            self.env.eventlist.append("combat")# combat , marchand,quest, coffre
+            self.env.eventlist.append("combat")# combat,marchand,quest,coffre
         return self
     
     def AddQuest(self):
-        self.env.eventlist.append("quest")# combat , marchand,quest, coffre
+        self.env.eventlist.append("quest")# combat,marchand,quest,coffre
         return self
 
     def insertKey(self):

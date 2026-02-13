@@ -1,11 +1,6 @@
-
-
-
-
-
-
 from Model.GameContext import GameContext
 from Model.Environnement import EnvironnementBuilder
+from Model.Objet import ObjetsFactory
 from Model.personnage_factory import Guerrier, Mage, Voleur
 
 
@@ -14,15 +9,19 @@ if __name__ == "__main__":
     print("Debut du jeu!")
     print("Donjon Quest!")
 
+    #initialisation des factory
+    factoryenmy="singletonenmies"
+    testorbe = ObjetsFactory().creer_objet("Orbe");
 
     #initialisation des environnement
     builder = EnvironnementBuilder()
     village= builder.reset().SetTitle("Village").AddEventlist(5).AddQuest().GetEnv()
     foret= builder.reset().SetTitle("Foret").AddEventlist(10).insertKey().GetEnv()
     donjon= builder.reset().SetTitle("Donjon").AddEventlist(20).setBoss().GetEnv()
+   
+   
+   
     #Setup du joueur
-
-
     choices= ["Guerrier,Mage,Voleur"]
     player_reply= input(f"Choisissez le type de joueur de depart: {choices}")
     joueur = None

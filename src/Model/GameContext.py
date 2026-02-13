@@ -9,4 +9,10 @@ class GameContext:
 
         pass
 
+    def save(self):
+        pass
+
+    def load(self):
+        pass
+
     
