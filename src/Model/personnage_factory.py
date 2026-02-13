@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import List
+
+from Model.Objet import Objet
 class Personnage(ABC):
     def __init__(self, nom: str, competence1: str,competence2: str, PV_max : int, current_PV : int):
         self.nom = nom
@@ -23,15 +26,14 @@ class Personnage(ABC):
         print(f"{self.nom} se protege.")
 
 class Player(Personnage):
-    def __init__(self, nom: str, classe: str, stats: int, offensif: int, defensif: int, capacite_armes: int, liste_inventaire: list[str] | None = None,inventaire: list[str] | None = None):
+    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1 : str, competence2 : str,):
         super().__init__(nom)
-        self.classe = classe
-        self.stats = stats
         self.offensif = offensif
         self.defensif = defensif
         self.capacite_armes = capacite_armes
-        self.liste_inventaire = []
-        self.inventaire= []
+        self.inventaire : List[Objet] = []
+        self.competence1 = competence1
+        self.competence2 = competence2
 
     def attaquer(self, cible: Personnage):
         degats = self.offensif
@@ -46,32 +48,48 @@ class Player(Personnage):
 
 class Guerrier(Player):
     def __init__(self, nom: str):
-        super().__init__(nom, classe="Guerrier", stats=150, offensif=20, defensif=15, capacite_armes=2)
+        super().__init__(nom,PV_max=150, offensif=20, defensif=15, capacite_armes=2,competence1 = "Frappe héroique", competence2="ground&pound")
         self.bonus = "Rage Berserk"
 
-    def utiliser_competence1(self):
+    def utiliser_competence1(self, cible : Personnage):
+        degats = self.offensif*1,2
+        cible.current_PV = cible.current_PV - degats
         print(f"{self.nom} lance Frappe Héroïque inflige {degats} a {cible.nom}")
 
-    def utiliser_competence2(self):
+    def utiliser_competence2(self, cible : Personnage):
+        """
+        mettre en place un status stun
+        """
         print(f"{self.nom} étourdi {cible.nom} !")
+
 
 class Mage(Player):
     def __init__(self, nom: str):
-        super().__init__(nom, classe="Mage", stats=100, offensif=30, defensif=5, capacite_armes=1)
+        super().__init__(nom, classe="Mage", PV_max=100, offensif=30, defensif=5, capacite_armes=1,competence1 = "Boule de feu", competence2="Poison")
         self.bonus = "Intelligence Arcane"
 
-    def utiliser_competence1(self):
-        print(f"{self.nom} lance Boule de Feu inflige {degats} a {cible.nom}")
-    def utiliser_competence2(self):
+    def utiliser_competence1(self, cible : Personnage):
+         degats = self.offensif*1,5
+         cible.current_PV = cible.current_PV - degats
+         print(f"{self.nom} lance Boule de Feu inflige {degats} a {cible.nom}")
+    def utiliser_competence2(self, cible : Personnage):
+        """"
+        mettre en place un status empoisoner
+        """
         print(f"{self.nom} empoisonne {cible.nom}")
 
 class Voleur(Player):
     def __init__(self, nom: str):
-        super().__init__(nom, classe="Voleur", stats=110, offensif=25, defensif=8, capacite_armes=2)
+        super().__init__(nom, classe="Voleur", PV_max=110, offensif=25, defensif=8, capacite_armes=2,competence1 = "Attaque fourbe", competence2="Vole inée")
         self.bonus = "Attaque Sournoise"
 
-    def utiliser_competence1(self):
-        print(f"{self.nom} devient invisible !")
+    def utiliser_competence1(self, cible : Personnage):
+        degats = self.offensif*1,5
+        cible.current_PV = cible.current_PV - degats
+        print(f"{self.nom} donne deux coup de dague rapide")
 
-    def utiliser_competence2(self):
+    def utiliser_competence2(self, cible : Personnage):
+        """"
+        voler a ennemi mettre dans inventaire
+        """
         print(f"{self.nom} vole {cible.nom} !")
