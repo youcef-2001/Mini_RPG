@@ -52,4 +52,62 @@ class Antidote(consommable):
     def consommer(self, personnage, enemy):
         personnage.statuts = [s for s in personnage.statuts if s.nom != "Poison"]
         print(f"{personnage.nom} est soigné du poison !")
+
+
     
+class Equipement(Objet):
+    def __init__(self, name, classe, stats, poids, type_, passif):
+        super().__init__(name)
+        self.classe = classe        
+        self.stats = stats          
+        self.poids = poids
+        self.type = type_           
+        self.passif = passif 
+
+    def appliquer_bonus(self, personnage):
+        if self.type == "Arme":
+            personnage.offensif += self.stats
+        elif self.type == "Armure":
+            personnage.defensif += self.stats
+
+class VoleurEquipement(Equipement):
+    def __init__(self, nom, poids, effet=None, bonus=None):
+        super().__init__(nom, "Voleur", poids, passif=effet)
+        self.effet = effet
+        self.bonus = bonus
+
+class Dag(VoleurEquipement):
+    def __init__(self, nom, poids, effet=None, bonus=None):
+        super().__init__("Dag", poids, effet, bonus)
+
+class MageEquipement(Equipement):
+    def __init__(self, nom, stats, poids, type_, effet=None, bonus=None):
+        super().__init__(nom, "Mage", stats, poids, type_, passif=effet)
+        self.effet = effet
+        self.bonus = bonus
+
+class GuerrierEquipement(Equipement):
+    def __init__(self, nom, stats, poids, type_, effet=None, bonus=None):
+        super().__init__(nom, "Guerrier", stats, poids, type_, passif=effet)
+        self.effet = effet
+        self.bonus = bonus
+
+class CommuneEquipement(Equipement):
+    def __init__(self, nom, stats, poids, type_, effet=None, bonus=None):
+        super().__init__(nom, "Commune", stats, poids, type_, passif=effet)
+        self.effet = effet
+        self.bonus = bonus
+
+
+class ObjetsFactory:
+
+    @staticmethod
+    def creer_objet(type_objet: str):
+        objets = {
+            "Potion": lambda: Potion(),
+            "Bombe": lambda: Bombe(),
+            "Antidote": lambda: Antidote(),
+            "EpeeGuerrier": lambda: GuerrierEquipement()
+        }
+
+      
