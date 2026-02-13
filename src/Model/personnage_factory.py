@@ -36,8 +36,8 @@ class Personnage(ABC):
         """
 
 class Player(Personnage):
-    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1 : str, competence2 : str,):
-        super().__init__(nom)
+    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status):
+        super().__init__(nom, competence1, competence2 , PV_max , current_PV , status)
         self.offensif = offensif
         self.defensif = defensif
         self.capacite_armes = capacite_armes
