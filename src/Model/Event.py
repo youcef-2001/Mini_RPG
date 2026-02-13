@@ -2,7 +2,7 @@ from typing import override
 
 
 class Event:
-    def __init__(self) -> None:
+    def __init__(self) :
         pass
 
     def lancer(self) : 
