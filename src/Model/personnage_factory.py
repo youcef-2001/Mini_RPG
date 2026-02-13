@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 import random
-from Model.Objet import Objet,Inventaire
+from Model.Objet import Objet,Inventaire,ObjetsFactory
 
 
 class Personnage(ABC):
@@ -59,6 +59,7 @@ class Player(Personnage):
         self.inventaire = Inventaire()
         self.competence1 = competence1
         self.competence2 = competence2
+        self.gold = 100
 
     def attaquer(self, cible: Personnage):
         degats = self.offensif
@@ -348,7 +349,7 @@ class PNJ(Personnage):
     def __init__(self, nom: str, competence1: str, competence2: str, PV_max: int, current_PV: int, status):
         super().__init__(nom, competence1, competence2, PV_max, current_PV, status)
     
-    def interagir(self, joueur):
+    def interagir(self, joueur,message):
         print(f"{self.nom} viens te pénave")
 
     def attaquer(self, opposant: 'Personnage'):
@@ -370,12 +371,52 @@ class PNJ(Personnage):
 class Marchand(PNJ):
     def __init__(self, nom="Marchand Itinérant"):
         super().__init__(nom, competence1="Négociation", competence2="Fuite", PV_max=50, current_PV=50, status=None)
-        self.inventaire_a_vendre = ["Potion de soin", "Épée en fer", "Bouclier en bois"] 
+        
+        self.catalogue = ["Potion", "Antidote", "Bombe", "Dag", "SabreLourd", "CostumeEnCuir", "Orbe"]
+        self.prix = {
+            "Potion": 20,
+            "Antidote": 30,
+            "Bombe": 50,
+            "Dag": 100,
+            "SabreLourd": 250,
+            "CostumeEnCuir": 150,
+            "Orbe": 200
+        }
 
     def interagir(self, joueur):
-        print(f"--- {self.nom} ---")
-        print("Sur Place ou pas a emporter chef?")
-        for item in self.inventaire_a_vendre:
-            print(f"- {item}")
+        print(f"\n--- {self.nom} ---")
+        print(f"Marchand: 'J'ai tout ce qu'il faut ! Tu as {joueur.gold} Gold.'")
+        
+        while True:
+            print("\nQue veux-tu acheter ? (Tape le numéro ou 0 pour quitter)")
+            for i, item_name in enumerate(self.catalogue, 1):
+                prix = self.prix.get(item_name, 0)
+                print(f"{i}. {item_name} - {prix} Gold")
+
+            choix = input("> ")
+
+            if choix == "0":
+                print("Marchand: 'À la revoyure !'")
+                break
+
+            try:
+                index = int(choix) - 1
+                if 0 <= index < len(self.catalogue):
+                    nom_objet = self.catalogue[index]
+                    prix_objet = self.prix.get(nom_objet, 0)
+                    if joueur.gold >= prix_objet:
+                        nouvel_objet = ObjetsFactory.creer_objet(nom_objet)
+                        if joueur.inventaire.ajouter_objet(nouvel_objet):
+                            joueur.gold -= prix_objet
+                            print(f"Achat réussi ! Il te reste {joueur.gold} Gold.")
+                        else:
+                            print("Marchand: Ton sac est trop lourd")
+                    else:
+                        print("Marchand:C'est pas gratuit ! Reviens avec plus de Gold.")
+                else:
+                    print("Je n'ai pas cet article.")
+            except ValueError:
+                print("Commande invalide.")
+
     def defense(self):
-        print(f"{self.nom} touche pas la bagnole")
+        print(f"{self.nom} c mon or!!!")
