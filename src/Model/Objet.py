@@ -56,11 +56,11 @@ class Antidote(consommable):
 
     
 class Equipement(Objet):
-    def __init__(self, name: str, classe: str, degat_sup: int, poids: int, type_: str):
+    def __init__(self, name: str, classe: str, degat_sup: int, gold: int, type_: str):
         super().__init__(name)
         self.classe = classe
         self.degat_sup = degat_sup
-        self.poids = poids
+        self.gold = gold
         self.type = type_   
 
     def appliquer_bonus(self, personnage):
@@ -70,8 +70,8 @@ class Equipement(Objet):
             personnage.defensif += self.degat_sup
 
 class VoleurEquipement(Equipement):
-    def __init__(self, name, degat_sup, poids, type_="Arme"):
-        super().__init__(name, "Voleur", degat_sup, poids, type_)
+    def __init__(self, name, degat_sup, gold, type_="Arme"):
+        super().__init__(name, "Voleur", degat_sup, gold, type_)
 
 
 class Dag(VoleurEquipement):
@@ -79,44 +79,44 @@ class Dag(VoleurEquipement):
         super().__init__(
             name="Dag",
             degat_sup=6,
-            poids=2
+            gold=2
         )
 
 class MageEquipement(Equipement):
-    def __init__(self, name, degat_sup, poids, type_="Arme"):
-        super().__init__(name, "Mage", degat_sup, poids, type_)
+    def __init__(self, name, degat_sup, gold, type_="Arme"):
+        super().__init__(name, "Mage", degat_sup, gold, type_)
 
 class Orbe(MageEquipement):
     def __init__(self):
         super().__init__(
             name="Orbe",
             degat_sup=8,
-            poids=2
+            gold=2
         )
 
 
 class GuerrierEquipement(Equipement):
-    def __init__(self, name, degat_sup, poids, type_="Arme"):
-        super().__init__(name, "Guerrier", degat_sup, poids, type_)
+    def __init__(self, name, degat_sup, gold, type_="Arme"):
+        super().__init__(name, "Guerrier", degat_sup, gold, type_)
 
 class SabreLourd(GuerrierEquipement):
     def __init__(self):
         super().__init__(
             name="SabreLourd",
             degat_sup=10,
-            poids=5
+            gold=5
         )
 
 class CommuneEquipement(Equipement):
-    def __init__(self, name, degat_sup, poids, type_="Armure"):
-        super().__init__(name, "Commune", degat_sup, poids, type_)
+    def __init__(self, name, degat_sup, gold, type_="Armure"):
+        super().__init__(name, "Commune", degat_sup, gold, type_)
 
 class CostumeEnCuir(CommuneEquipement):
     def __init__(self):
         super().__init__(
             name="CostumeEnCuir",
             degat_sup=3,
-            poids=4,
+            gold=4,
         )
 
 class ObjetsFactory:
