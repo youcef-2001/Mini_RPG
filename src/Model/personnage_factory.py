@@ -53,16 +53,22 @@ class Player(Personnage):
     def se_defendre(self):
         print(f"{self.nom} se protege {self.defensif}")
 
-    def utiliser_competence(self):
-        pass
-
 class Guerrier(Player):
     def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
         super().__init__(nom, offensif=20, defensif=15, capacite_armes=2,competence1 = "Frappe héroique", competence2="ground&pound",PV_max=150,current_PV=150,status= None)
         self.bonus = "Rage Berserk"
 
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} donne un coup d'epée {degats} a {cible.nom}")
+
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.2
+         print(f"{self.nom} se met en garde")
+
     def utiliser_competence1(self, cible : Personnage):
-        degats = self.offensif*1,2
+        degats = self.offensif*1,4
         cible.current_PV = cible.current_PV - degats
         print(f"{self.nom} lance Frappe Héroïque inflige {degats} a {cible.nom}")
 
@@ -76,6 +82,11 @@ class Mage(Player):
     def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
         super().__init__(nom, classe="Mage",  offensif=30, defensif=5, capacite_armes=1,competence1 = "Boule de feu", competence2="Poison",PV_max=100,current_PV=150,status= None)
         self.bonus = "Intelligence Arcane"
+
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif*0.2
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} donne un coup de baton {degats} a {cible.nom}")
 
     def utiliser_competence1(self, cible : Personnage):
          degats = self.offensif*1,5
@@ -91,6 +102,12 @@ class Voleur(Player):
     def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
         super().__init__(nom, classe="Voleur",  offensif=25, defensif=8, capacite_armes=2,competence1 = "Attaque fourbe", competence2="Vole inée",PV_max=110,current_PV=150,status= None)
         self.bonus = "Attaque Sournoise"
+
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} donne un coup de dague {degats} a {cible.nom}")
+
 
     def utiliser_competence1(self, cible : Personnage):
         degats = self.offensif*1,5
@@ -121,6 +138,3 @@ class Enemy(Personnage):
 
     def se_defendre(self):
         print(f"{self.nom} se protege {self.defensif}")
-
-    def utiliser_competence(self):
-        pass
