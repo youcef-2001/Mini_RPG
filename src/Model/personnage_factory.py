@@ -64,7 +64,7 @@ class Guerrier(Player):
          print(f"{self.nom} donne un coup d'epée {degats} a {cible.nom}")
 
     def utiliser_defense(self, cible : Personnage):
-         protection = self.defensif*1.2
+         protection = self.defensif*1.5
          print(f"{self.nom} se met en garde")
 
     def utiliser_competence1(self, cible : Personnage):
@@ -88,6 +88,10 @@ class Mage(Player):
          cible.current_PV = cible.current_PV - (degats - {cible.defensif})
          print(f"{self.nom} donne un coup de baton {degats} a {cible.nom}")
 
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.1
+         print(f"{self.nom} se met en garde")
+
     def utiliser_competence1(self, cible : Personnage):
          degats = self.offensif*1,5
          cible.current_PV = cible.current_PV - degats
@@ -107,6 +111,10 @@ class Voleur(Player):
          degats = self.offensif
          cible.current_PV = cible.current_PV - (degats - {cible.defensif})
          print(f"{self.nom} donne un coup de dague {degats} a {cible.nom}")
+
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.1
+         print(f"{self.nom} se met en garde")
 
 
     def utiliser_competence1(self, cible : Personnage):
@@ -138,3 +146,140 @@ class Enemy(Personnage):
 
     def se_defendre(self):
         print(f"{self.nom} se protege {self.defensif}")
+
+class Loup_sauvage(Enemy):
+    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
+        super().__init__(nom, offensif=20, defensif=15, capacite_armes=2,competence1 = "morsure", competence2="Double patte",PV_max=150,current_PV=150,status= None)
+        self.bonus = "meute offensif"
+
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif*0.5
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} mors{degats} a {cible.nom}")
+
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.2
+         print(f"{self.nom} se met en garde")
+
+    def utiliser_competence1(self, cible : Personnage):
+        degats = self.offensif*1,1
+        cible.current_PV = cible.current_PV - degats
+        print(f"{self.nom} lance morsure {degats} a {cible.nom}")
+
+    def utiliser_competence2(self, cible : Personnage,status):
+        degats = self.offensif
+        cible.current_PV = cible.current_PV - degats
+        degats = self.offensif
+        cible.current_PV = cible.current_PV - degats
+        print(f"{self.nom} Double attaque {cible.nom} !")
+
+
+class Bandit(Enemy):
+    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
+        super().__init__(nom, offensif=20, defensif=15, capacite_armes=2,competence1 = "Couteau usé", competence2="vole inée",PV_max=150,current_PV=150,status= None)
+        self.bonus = "meute offensif"
+
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif*0.5
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} enleve {degats} a {cible.nom}")
+
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.2
+         print(f"{self.nom} se met en garde")
+
+    def utiliser_competence1(self, cible : Personnage):
+        degats = self.offensif*1,1
+        cible.current_PV = cible.current_PV - degats
+        print(f"{self.nom} couteau usé {degats} a {cible.nom}")
+
+    def utiliser_competence2(self, cible : Personnage,inventaire):
+        if {cible.nom(inventaire)} is not None : #mettre que le voleur prend un des item(s)
+             print(f"{self.nom} vole {cible.nom} !")
+        if {cible.nom(inventaire)} is None : 
+            print(f"{cible.nom} a rien je lui passe une piece mskn")
+            pass
+
+class Squelette(Enemy):
+    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
+        super().__init__(nom, offensif=20, defensif=15, capacite_armes=2,competence1 = " os ronger", competence2="maladie squeletique",PV_max=150,current_PV=150,status= None)
+        self.bonus = "meute offensif"
+
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif*0.5
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} enleve {degats} a {cible.nom}")
+
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.2
+         print(f"{self.nom} se met en garde")
+
+    def utiliser_competence1(self, cible : Personnage):
+        degats = self.offensif*1,1
+        cible.current_PV = cible.current_PV - degats
+        print(f"{self.nom} couteau usé {degats} a {cible.nom}")
+
+    def utiliser_competence2(self, cible : Personnage,status):
+        if {cible.nom(status)} is None: status.appliquer({cible.nom})
+        if {cible.nom(status)} is not None : pass
+        print(f"{self.nom} empoisonne {cible.nom}")
+
+
+class Champion_corrompu(Enemy):
+    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
+        super().__init__(nom, offensif=20, defensif=15, capacite_armes=2,competence1 = " Coup de poing pieger", competence2="coup derriere le crane",PV_max=150,current_PV=150,status= None)
+        self.bonus = "meute offensif"
+
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif*0.5
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} enleve {degats} a {cible.nom}")
+
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.2
+         print(f"{self.nom} se met en garde")
+
+    def utiliser_competence1(self, cible : Personnage):
+        degats = self.offensif*1,1
+        cible.current_PV = cible.current_PV - degats
+        print(f"{self.nom} coup du tricheur {degats} a {cible.nom}")
+
+    def utiliser_competence2(self, cible : Personnage,status):
+        if {cible.nom(status)} is None: status.appliquer({cible.nom})
+        if {cible.nom(status)} is not None : pass
+        print(f"{self.nom} un coup ilégal qui stun {cible.nom} !")
+
+
+class Gardien_du_donjon(Enemy):
+    def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
+        super().__init__(nom, offensif=20, defensif=15, capacite_armes=2,competence1 = " Coup de poing pieger", competence2="coup derriere le crane",PV_max=150,current_PV=150,status= None)
+        self.bonus = "meute offensif"
+        self.deuxieme_phase = False
+
+    def utiliser_attaque(self, cible : Player):
+         degats = self.offensif
+         cible.current_PV = cible.current_PV - (degats - {cible.defensif})
+         print(f"{self.nom} enleve {degats} a {cible.nom}")
+
+    def utiliser_defense(self, cible : Personnage):
+         protection = self.defensif*1.5
+         print(f"{self.nom} se met en garde")
+
+    def utiliser_competence1(self, cible : Personnage):
+        degats = self.offensif*1,7
+        cible.current_PV = cible.current_PV - degats
+        print(f"{self.nom} coup du tricheur {degats} a {cible.nom}")
+
+    def utiliser_competence2(self, cible : Personnage,status):
+        degats = self.offensif*1,2
+        if {cible.nom(status)} is None: status.appliquer({cible.nom})
+        if {cible.nom(status)} is not None : pass
+        print(f"{self.nom} un coup ilégal qui stun {cible.nom} !")
+
+    def deuxieme_manche(self):
+        if self.current_PV <= (self.PV_max / 2) and self.deuxieme_phase == False:
+            self.offensif *= 2
+            self.defensif *= 2
+            self.current_PV += 20
+            self.deuxieme_phase = True
+            print(f"{self.nom} tu la zehef, ses stats sont doublées")
