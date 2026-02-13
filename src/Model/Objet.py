@@ -4,9 +4,16 @@ class Objet:
         self.name = name
 
 
-class Key(Objet):
+class key(Objet):
     def __init__(self, name):
-        super().__init__(name)
+        self.name = name
+    
+    def getName(self):
+        return self.name
+    
+    def setName(self, value):
+        self.name = value
+
 
 class consommable(Objet): 
     def __init__(self, name):
@@ -22,7 +29,7 @@ class Potion(consommable):
         super().__init__("Potion")
     
     def consommer(self, personnage, enemy):
-        personnage.current_PV = personnage.current_PV + int(personnage.PV_max * 0.2)
+        personnage.current_PV = personnage.current_PV + personnage.PV_max * 0.2
         
         if personnage.current_PV > personnage.PV_max:
             personnage.current_PV = personnage.PV_max
@@ -43,24 +50,17 @@ class Antidote(consommable):
         super().__init__("Antidote")
 
     def consommer(self, personnage, enemy):
-        avant = len(personnage.statuts)
         personnage.statuts = [s for s in personnage.statuts if s.nom != "Poison"]
-        apres = len(personnage.statuts)
-
-        if avant != apres:
-            print(f"{personnage.nom} est soigné du poison !")
-        else:
-            print("Aucun poison à retirer.")
-
+        print(f"{personnage.nom} est soigné du poison !")
 
 
     
 class Equipement(Objet):
-    def __init__(self, name: str, classe: str, degat_sup: int, gold: int, type_: str):
+    def __init__(self, name: str, classe: str, degat_sup: int, poids: int, type_: str):
         super().__init__(name)
         self.classe = classe
         self.degat_sup = degat_sup
-        self.gold = gold
+        self.poids = poids
         self.type = type_   
 
     def appliquer_bonus(self, personnage):
@@ -70,53 +70,53 @@ class Equipement(Objet):
             personnage.defensif += self.degat_sup
 
 class VoleurEquipement(Equipement):
-    def __init__(self, name, degat_sup, gold, type_="Arme"):
-        super().__init__(name, "Voleur", degat_sup, gold, type_)
+    def __init__(self, name, degat_sup, poids, type_="Arme"):
+        super().__init__(name, "Voleur", degat_sup, poids, type_)
 
 
-class Dague(VoleurEquipement):
+class Dag(VoleurEquipement):
     def __init__(self):
         super().__init__(
-            name="Dague",
+            name="Dag",
             degat_sup=6,
-            gold=2
+            poids=2
         )
 
 class MageEquipement(Equipement):
-    def __init__(self, name, degat_sup, gold, type_="Arme"):
-        super().__init__(name, "Mage", degat_sup, gold, type_)
+    def __init__(self, name, degat_sup, poids, type_="Arme"):
+        super().__init__(name, "Mage", degat_sup, poids, type_)
 
 class Orbe(MageEquipement):
     def __init__(self):
         super().__init__(
             name="Orbe",
             degat_sup=8,
-            gold=2
+            poids=2
         )
 
 
 class GuerrierEquipement(Equipement):
-    def __init__(self, name, degat_sup, gold, type_="Arme"):
-        super().__init__(name, "Guerrier", degat_sup, gold, type_)
+    def __init__(self, name, degat_sup, poids, type_="Arme"):
+        super().__init__(name, "Guerrier", degat_sup, poids, type_)
 
 class SabreLourd(GuerrierEquipement):
     def __init__(self):
         super().__init__(
             name="SabreLourd",
             degat_sup=10,
-            gold=5
+            poids=5
         )
 
 class CommuneEquipement(Equipement):
-    def __init__(self, name, degat_sup, gold, type_="Armure"):
-        super().__init__(name, "Commune", degat_sup, gold, type_)
+    def __init__(self, name, degat_sup, poids, type_="Armure"):
+        super().__init__(name, "Commune", degat_sup, poids, type_)
 
 class CostumeEnCuir(CommuneEquipement):
     def __init__(self):
         super().__init__(
             name="CostumeEnCuir",
             degat_sup=3,
-            gold=4,
+            poids=4,
         )
 
 class ObjetsFactory:
@@ -125,7 +125,7 @@ class ObjetsFactory:
     def creer_objet(type_objet: str):
 
         objets = {
-            "Dag": Dague,
+            "Dag": Dag,
             "Orbe": Orbe,
             "SabreLourd": SabreLourd,
             "CostumeEnCuir": CostumeEnCuir,

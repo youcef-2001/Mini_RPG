@@ -423,39 +423,39 @@ class Marchand(PNJ):
         print(f"{self.nom} c mon or!!!")
 
 
-    class Barbare(PNJ):
-        def __init__(self, nom="Haroun"):
-            super().__init__(nom, competence1="Tacle lourd", competence2="Codage intense", PV_max=200, current_PV=200, status=None)
-            self.offensif = 35
-            self.defensif = 20
-            self.armes = ObjetsFactory.creer_objet("SabreLourd")
+class Barbare(PNJ):
+    def __init__(self, nom="Haroun"):
+        super().__init__(nom, competence1="Tacle lourd", competence2="Codage intense", PV_max=200, current_PV=200, status=None)
+        self.offensif = 35
+        self.defensif = 20
+        self.armes = ObjetsFactory.creer_objet("SabreLourd")
 
-        def interagir(self, joueur):
+    def interagir(self, joueur):
 
-            if self in joueur.groupe:
-                print(f"\n{self.nom}: Ou se trouve Sir Tarik charger en bas et alyssa l'inseparable")
-                return
-            print(f"\n{self.nom} Un single leg si tu avance plus")
-            print(f"{self.nom}: 'MOI HAROUN le chef du code'")
-            print(f"{self.nom}: 'si tu repond juste j'embarque dans ta mission'")
-            print(f"{self.nom}: 'Sinon je vais te tacler!!'")
+        if self in joueur.groupe:
+            print(f"\n{self.nom}: Ou se trouve Sir Tarik charger en bas et alyssa l'inseparable")
+            return
+        print(f"\n{self.nom} Un single leg si tu avance plus")
+        print(f"{self.nom}: 'MOI HAROUN le chef du code'")
+        print(f"{self.nom}: 'si tu repond juste j'embarque dans ta mission'")
+        print(f"{self.nom}: 'Sinon je vais te tacler!!'")
+    
+        print("\n--- Énigme de Haroun ---")
+        print(f"{self.nom}: 'Si je te ground&pound et que tu perd 20 pv sur les 100 mais que tu a 8 de defensif combien te restera t'il?'")
+    
+        reponse = input("Ta réponse > ")
+
+        if reponse == "88":
+            print(f"\n{self.nom}: 'pas mal je t'accompagne'")
+            print(f"{self.nom} vous tape dans le dos amicalement (ça fait mal).")
+            (f"*** {self.nom} a rejoint votre groupe ! ***")
         
-            print("\n--- Énigme de Haroun ---")
-            print(f"{self.nom}: 'Si je te ground&pound et que tu perd 20 pv sur les 100 mais que tu a 8 de defensif combien te restera t'il?'")
+            joueur.groupe.append(self)
         
-            reponse = input("Ta réponse > ")
-
-            if reponse == "88":
-                print(f"\n{self.nom}: 'pas mal je t'accompagne'")
-                print(f"{self.nom} vous tape dans le dos amicalement (ça fait mal).")
-                (f"*** {self.nom} a rejoint votre groupe ! ***")
-            
-                joueur.groupe.append(self)
-            
-            else:
-                print(f"\n{self.nom}: 'Bon on va se remettre a réviser en garde'")
-                print(f"{self.nom} Ton visage rencontre le sol")
-                self.attaquer(joueur)
+        else:
+            print(f"\n{self.nom}: 'Bon on va se remettre a réviser en garde'")
+            print(f"{self.nom} Ton visage rencontre le sol")
+            self.attaquer(joueur)
 
     def attaquer(self, cible):
         degats_totaux = self.offensif + self.armes
@@ -463,7 +463,7 @@ class Marchand(PNJ):
         print(f"{self.nom} frappe avec {self.armes} ! ({degats_totaux} dégâts)")
 
     def defense(self):
-         print(f"{self.nom} gonfle les pectoraux pour encaisser !")
+            print(f"{self.nom} gonfle les pectoraux pour encaisser !")
 
 class PNJFactory:
     @staticmethod
