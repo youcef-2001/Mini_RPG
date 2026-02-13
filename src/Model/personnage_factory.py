@@ -148,6 +148,8 @@ class Voleur(Player):
              print(f"{self.nom} essaie de voler {objet_vole.name}, mais a plus de place")
         
 
+
+
 class Enemy(Personnage):
     def __init__(self, nom: str, offensif: int, defensif: int, armes: int,armures: int,competence1: str,competence2: str, PV_max : int, current_PV : int, status, inventaire):
         super().__init__(nom, competence1, competence2 , PV_max , current_PV , status)
@@ -306,3 +308,74 @@ class Gardien_du_donjon(Enemy):
             self.current_PV += 20
             self.deuxieme_phase = True
             print(f"{self.nom} tu la zehef, ses stats sont doublées")
+
+class EnemyFactory:
+    @staticmethod
+    def create_enemy(type_enemy: str) -> Enemy:
+        type_enemy = type_enemy.lower()
+        
+        dummy_args = {
+            "offensif": 0, 
+            "defensif": 0, 
+            "armes": 0, 
+            "competence1": "", 
+            "competence2": "", 
+            "PV_max": 0, 
+            "current_PV": 0, 
+            "status": None, 
+            "inventaire": None
+        }
+
+        if type_enemy == "loup":
+            return Loup_sauvage(nom="Loup Sauvage", **dummy_args)
+        
+        elif type_enemy == "bandit":
+            return Bandit(nom="Bandit", **dummy_args)
+        
+        elif type_enemy == "squelette":
+            return Squelette(nom="Squelette", **dummy_args)
+        
+        elif type_enemy == "champion":
+            return Champion_corrompu(nom="Champion Corrompu", **dummy_args)
+        
+        elif type_enemy == "gardien":
+            return Gardien_du_donjon(nom="Gardien du Donjon", **dummy_args)
+        
+        else:
+            raise ValueError(f"Type d'ennemi inconnu : {type_enemy}")
+        
+class PNJ(Personnage):
+    def __init__(self, nom: str, competence1: str, competence2: str, PV_max: int, current_PV: int, status):
+        super().__init__(nom, competence1, competence2, PV_max, current_PV, status)
+    
+    def interagir(self, joueur):
+        print(f"{self.nom} viens te pénave")
+
+    def attaquer(self, opposant: 'Personnage'):
+        print(f"{self.nom} ne veut pas se battre !")
+
+    def competence_1(self):
+        pass
+
+    def competence_2(self):
+        pass
+
+    def defense(self):
+        print(f"{self.nom} arrete de m'attaquer gros hagar")
+
+    def debut_de_tour(self, status):
+        pass
+
+
+class Marchand(PNJ):
+    def __init__(self, nom="Marchand Itinérant"):
+        super().__init__(nom, competence1="Négociation", competence2="Fuite", PV_max=50, current_PV=50, status=None)
+        self.inventaire_a_vendre = ["Potion de soin", "Épée en fer", "Bouclier en bois"] 
+
+    def interagir(self, joueur):
+        print(f"--- {self.nom} ---")
+        print("Sur Place ou pas a emporter chef?")
+        for item in self.inventaire_a_vendre:
+            print(f"- {item}")
+    def defense(self):
+        print(f"{self.nom} touche pas la bagnole")
