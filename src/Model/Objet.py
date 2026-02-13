@@ -74,10 +74,10 @@ class VoleurEquipement(Equipement):
         super().__init__(name, "Voleur", degat_sup, gold, type_)
 
 
-class Dag(VoleurEquipement):
+class Dague(VoleurEquipement):
     def __init__(self):
         super().__init__(
-            name="Dag",
+            name="Dague",
             degat_sup=6,
             gold=2
         )
