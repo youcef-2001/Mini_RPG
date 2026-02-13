@@ -1,7 +1,7 @@
 from typing import override
 
 
-class Event:
+class EventStrategy:
     def __init__(self) :
         self.finished= False
         
@@ -9,13 +9,13 @@ class Event:
     def lancer(self) : 
         print("executer l'event")
 
-class Walking(Event):
+class Walking(EventStrategy):
     @override
     def lancer(self):
         print("je marche")
         self.finished = True
 
-class Marchand(Event):
+class Marchand(EventStrategy):
     def __init__(self) :
         super().__init__()
         self.marchand= PNJFactory.getmarchand()
@@ -32,19 +32,19 @@ class Marchand(Event):
 
         self.finished = True
 
-class Combat(Event):
+class Combat(EventStrategy):
     @override
     def lancer(self):
         print(" en combat ")
         self.finished = True
 
-class Coffre(Event):
+class Coffre(EventStrategy):
     @override
     def lancer(self):
         print("je viens de trouver un coffre")
         self.finished = True
 
-class Dialogue(Event):
+class Dialogue(EventStrategy):
     @override
     def lancer(self):
         print("je dialogue pour avancer dans la quete")

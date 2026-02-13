@@ -1,9 +1,7 @@
 # Mini_RPG
 
 
-projet pour l' implementation de design patterns sur un RPG 
-
-
+Projet pour l' implementation de design patterns sur un RPG 
 
 
 -   Tout les Enemies , Player et PNJ sont des personnages.
