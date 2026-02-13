@@ -4,16 +4,9 @@ class Objet:
         self.name = name
 
 
-class key(Objet):
+class Key(Objet):
     def __init__(self, name):
-        self.name = name
-    
-    def getName(self):
-        return self.name
-    
-    def setName(self, value):
-        self.name = value
-
+        super().__init__(name)
 
 class consommable(Objet): 
     def __init__(self, name):
@@ -29,7 +22,7 @@ class Potion(consommable):
         super().__init__("Potion")
     
     def consommer(self, personnage, enemy):
-        personnage.current_PV = personnage.current_PV + personnage.PV_max * 0.2
+        personnage.current_PV = personnage.current_PV + int(personnage.PV_max * 0.2)
         
         if personnage.current_PV > personnage.PV_max:
             personnage.current_PV = personnage.PV_max
@@ -50,8 +43,15 @@ class Antidote(consommable):
         super().__init__("Antidote")
 
     def consommer(self, personnage, enemy):
+        avant = len(personnage.statuts)
         personnage.statuts = [s for s in personnage.statuts if s.nom != "Poison"]
-        print(f"{personnage.nom} est soigné du poison !")
+        apres = len(personnage.statuts)
+
+        if avant != apres:
+            print(f"{personnage.nom} est soigné du poison !")
+        else:
+            print("Aucun poison à retirer.")
+
 
 
     
