@@ -125,7 +125,7 @@ class ObjetsFactory:
     def creer_objet(type_objet: str):
 
         objets = {
-            "Dag": Dag,
+            "Dag": Dague,
             "Orbe": Orbe,
             "SabreLourd": SabreLourd,
             "CostumeEnCuir": CostumeEnCuir,
