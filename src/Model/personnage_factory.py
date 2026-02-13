@@ -3,12 +3,13 @@ from typing import List
 
 from Model.Objet import Objet
 class Personnage(ABC):
-    def __init__(self, nom: str, competence1: str,competence2: str, PV_max : int, current_PV : int):
+    def __init__(self, nom: str, competence1: str,competence2: str, PV_max : int, current_PV : int, status):
         self.nom = nom
         self.competence1 = competence1
         self.competence2 = competence2
         self.PV_max = PV_max
         self.current_PV = current_PV
+        self.status = status
     @abstractmethod
     def attaquer(self, opposant :'Personnage'):
         print(f"{self.nom} attaque {opposant.nom} !")
@@ -24,6 +25,15 @@ class Personnage(ABC):
     @abstractmethod
     def defense(self):
         print(f"{self.nom} se protege.")
+
+    @abstractmethod
+    def debut_de_tour(self, status):
+        if status is None: pass
+
+        if status is not None: status.appliquer(self)
+        """"
+        si status pas = none appliquer effet du status
+        """
 
 class Player(Personnage):
     def __init__(self, nom: str, offensif: int, defensif: int, capacite_armes: int,competence1 : str, competence2 : str,):
@@ -56,10 +66,9 @@ class Guerrier(Player):
         cible.current_PV = cible.current_PV - degats
         print(f"{self.nom} lance Frappe Héroïque inflige {degats} a {cible.nom}")
 
-    def utiliser_competence2(self, cible : Personnage):
-        """
-        mettre en place un status stun
-        """
+    def utiliser_competence2(self, cible : Personnage,status):
+        if {cible.nom(status)} is None: status.appliquer({cible.nom})
+        if {cible.nom(status)} is not None : pass
         print(f"{self.nom} étourdi {cible.nom} !")
 
 
@@ -72,10 +81,10 @@ class Mage(Player):
          degats = self.offensif*1,5
          cible.current_PV = cible.current_PV - degats
          print(f"{self.nom} lance Boule de Feu inflige {degats} a {cible.nom}")
-    def utiliser_competence2(self, cible : Personnage):
-        """"
-        mettre en place un status empoisoner
-        """
+
+    def utiliser_competence2(self, cible : Personnage, status):
+        if {cible.nom(status)}is None: status.appliquer({cible.nom})
+        if {cible.nom(status)} is not None : pass
         print(f"{self.nom} empoisonne {cible.nom}")
 
 class Voleur(Player):
