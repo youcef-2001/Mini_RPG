@@ -22,12 +22,10 @@ Projet pour l' implementation de design patterns sur un RPG
 -   Game Contexte devra etre mla classe qui implemente la sauvegarde et le chargement et elle contient l'essentiel des informations du jeu qui seront serialiser et sauvegarder.
 
 -   la classe Event est utiliser similairement a la classe strategy
+- Gamecontext definie tout la game ce sera donc un singleton
 
 L'UML explique brievement les relations et classes etablie.
-
-
-
-
+![alt text](UML_Mini_RPG.drawio.png)
 
 
 
